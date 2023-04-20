@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import type { DefaultTheme } from 'styled-components';
-import * as enums from '../../../enums';
-import { InnerSection, PanelButton, Section } from '../themed';
-import { Checkbox, Header, Inline } from '../../customs';
-import changeTheme from '../utils';
 import * as animation from '../../../animation';
+import * as enums from '../../../enums';
+import { Checkbox, Header, Inline } from '../../customs';
+import { InnerSection, PanelButton, Section } from '../themed';
+import changeTheme from '../utils';
 
 export const Theme: React.FC<{
   setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
@@ -81,9 +81,6 @@ export const Generic: React.FC<{
       exit="exit"
       data-cy="settings-section-theme"
     >
-      <Theme setTheme={setTheme} theme={theme} />
-      <Theme setTheme={setTheme} theme={theme} />
-      <Theme setTheme={setTheme} theme={theme} />
       <Theme setTheme={setTheme} theme={theme} />
     </Section>
   );

@@ -1,5 +1,5 @@
-import type { NavigateFunction } from 'react-router-dom';
 import type React from 'react';
+import type { NavigateFunction } from 'react-router-dom';
 import type { INotification } from '../../redux/types';
 
 // eslint-disable-next-line import/prefer-default-export

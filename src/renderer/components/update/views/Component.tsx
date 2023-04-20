@@ -3,11 +3,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import * as animation from '../../../animation';
-import { Button, Container, ContainerBody, Header, PanelHeader } from '../../customs';
 import * as hooks from '../../../redux';
-import * as renders from './Renderer';
 import { useMainDispatch } from '../../../redux/hooks';
+import { Button, Container, ContainerBody, Header, PanelHeader } from '../../customs';
 import { installUpdate, sendUpdate } from '../controllers';
+import * as renders from './Renderer';
 
 const Update: React.FC = () => {
   const { notes, version, available, ready } = useSelector(hooks.updateState);

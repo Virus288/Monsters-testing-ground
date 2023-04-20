@@ -1,6 +1,6 @@
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link as ReactLink } from 'react-router-dom';
+import styled from 'styled-components';
 import type * as localTypes from '../../types';
 
 const BaseButton = styled(motion.button)<localTypes.IDefaultChildren>`

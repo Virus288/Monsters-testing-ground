@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import styled from 'styled-components';
 import type * as localTypes from '../../../types';
 import { ExitButton } from '../../customs';
 

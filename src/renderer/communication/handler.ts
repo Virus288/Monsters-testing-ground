@@ -1,9 +1,10 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import type { MainDispatch } from '../store/types';
-import type * as types from '../../types';
 import * as enums from '../../enums';
-import * as hooks from '../redux';
+import type * as types from '../../types';
 import { ENotificationType } from '../enums';
+import * as hooks from '../redux';
+import type { IResponsesBody } from '../redux/types';
+import type { MainDispatch } from '../store/types';
 
 export default class Handler {
   dispatch: MainDispatch;
@@ -51,9 +52,16 @@ export default class Handler {
       case enums.EGenericChannel.Init:
         this.dispatch(hooks.initApp());
         break;
+      case enums.EGenericChannel.Response:
+        this.handleResponse(data as IResponsesBody);
+        break;
       default:
         break;
     }
+  }
+
+  private handleResponse(data: IResponsesBody): void {
+    this.dispatch(hooks.addResponse(data));
   }
 
   private checkUpdate(data: types.IUpdateDetails): void {

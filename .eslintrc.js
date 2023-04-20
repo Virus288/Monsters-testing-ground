@@ -66,6 +66,17 @@ module.exports = {
     'import/no-cycle': 2,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': 2,
+    'import/order': [
+      'error',
+      {
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+        'newlines-between': 'never',
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      },
+    ],
     'import/prefer-default-export': 2,
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/click-events-have-key-events': 0,

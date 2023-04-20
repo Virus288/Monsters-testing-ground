@@ -1,15 +1,15 @@
+import { AnimatePresence } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import type { NavigateFunction } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { AnimatePresence } from 'framer-motion';
-import * as hooks from '../../../redux';
 import * as animation from '../../../animation';
-import { DisableNotifications, Notification, UpdateNotification } from '../themed';
+import { ENotificationType } from '../../../enums';
+import * as hooks from '../../../redux';
 import { useMainDispatch } from '../../../redux/hooks';
 import type { INotification } from '../../../redux/types';
-import { ENotificationType } from '../../../enums';
 import { navigateUpdate } from '../controllers';
+import { DisableNotifications, Notification, UpdateNotification } from '../themed';
 
 const renderNotifications = (
   messages: INotification[],

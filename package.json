@@ -2,7 +2,7 @@
   "name": "monsters_testing_ground",
   "main": "./src/main/main.ts",
   "description": "Monsters testing ground",
-  "productName": "Monsters testing ground",
+  "productName": "monsters_testing_ground",
   "author": "https://github.com/Virus288",
   "license": "Apache-2.0",
   "version": "0.0.1",
@@ -162,7 +162,7 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "react_electron_template",
+    "productName": "monsters_testing_ground",
     "appId": "org.jk.react_electron_template",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",

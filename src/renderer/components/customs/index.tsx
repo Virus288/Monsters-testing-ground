@@ -9,6 +9,7 @@ export * from './containers';
 export * from './forms';
 export * from './icons';
 export * from './animations';
+export * from './text';
 
 const Theme: React.FC<{
   children: React.ReactNode;

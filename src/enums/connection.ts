@@ -6,7 +6,6 @@ export enum EConnectionChannels {
 export enum EResponseCallback {
   Data = 'data',
   Error = 'error',
-  Debug = 'debug',
   Client = 'client',
   Log = 'log',
   Version = 'version',

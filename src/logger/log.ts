@@ -7,51 +7,81 @@ export default class Log {
     // Locked
   }
 
-  static error(target: string, message: unknown): void {
+  static error(target: string, ...messages: unknown[]): void {
+    const prepared = messages.map((m) => {
+      return typeof m !== 'string' ? JSON.stringify(m) : m;
+    });
+
     console.info(chalk.red(target));
-    console.info(message);
-    Log.saveLog(message, enums.ELogTypes.Error);
+    prepared.forEach((m) => {
+      console.info(chalk.red(m));
+      Log.saveLog(m, enums.ELogTypes.Error);
+    });
   }
 
-  static success(target: string, message: unknown): void {
-    console.info(chalk.green(target));
-    console.info(message);
-    Log.saveLog(message, enums.ELogTypes.Success);
-  }
+  static warn(target: string, ...messages: unknown[]): void {
+    const prepared = messages.map((m) => {
+      return typeof m !== 'string' ? JSON.stringify(m) : m;
+    });
 
-  static warn(target: string, message: unknown): void {
     console.info(chalk.yellow(target));
-    console.info(message);
-    Log.saveLog(message, enums.ELogTypes.Warn);
+    prepared.forEach((m) => {
+      console.info(chalk.yellow(m));
+      Log.saveLog(m, enums.ELogTypes.Warn);
+    });
   }
 
-  static log(target: string, message: unknown): void {
+  static log(target: string, ...messages: unknown[]): void {
+    const prepared = messages.map((m) => {
+      return typeof m !== 'string' ? JSON.stringify(m) : m;
+    });
+
     console.info(chalk.blue(target));
-    console.info(message);
-    Log.saveLog(message, enums.ELogTypes.Log);
+    prepared.forEach((m) => {
+      console.info(chalk.blue(m));
+      Log.saveLog(m, enums.ELogTypes.Log);
+    });
   }
 
-  static trace(target: string, message: unknown): void {
+  static trace(target: string, ...messages: unknown[]): void {
+    const prepared = messages.map((m) => {
+      return typeof m !== 'string' ? JSON.stringify(m) : m;
+    });
+
     console.trace(chalk.yellowBright(target));
-    console.info(message);
-    Log.saveLog(message, enums.ELogTypes.Log);
+    prepared.forEach((m) => {
+      console.info(chalk.yellowBright(m));
+      Log.saveLog(m, enums.ELogTypes.Log);
+    });
   }
 
-  private static saveLog(log: unknown, type: enums.ELogTypes): void {
-    const mess = typeof log !== 'string' ? JSON.stringify(log) : log;
+  static success(target: string, ...messages: unknown[]): void {
+    const prepared = messages.map((m) => {
+      return typeof m !== 'string' ? JSON.stringify(m) : m;
+    });
+
+    console.info(chalk.green(target));
+    prepared.forEach((m) => {
+      console.info(m);
+      Log.saveLog(m, enums.ELogTypes.Success);
+    });
+  }
+
+  private static saveLog(message: string, type: enums.ELogTypes): void {
     if (process.env.NODE_ENV === 'production' && !process.env.DEBUG_PROD) {
       return;
     }
 
     switch (type) {
-      case enums.ELogTypes.Error:
-        errLogger.error(mess);
-        break;
       case enums.ELogTypes.Warn:
-        errLogger.warn(mess);
-        break;
+        errLogger.warn(message);
+        return;
+      case enums.ELogTypes.Error:
+        errLogger.error(message);
+        return;
+      case enums.ELogTypes.Log:
       default:
-        errLogger.info(mess);
+        errLogger.info(message);
     }
   }
 }

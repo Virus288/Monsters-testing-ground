@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import type * as localTypes from '../../../types/theme';
+import styled from 'styled-components';
 import * as enums from '../../../enums';
+import type * as localTypes from '../../../types/theme';
 import type { INavbarProps } from '../../customs';
 
 export const NavContainer = styled(motion.div)<localTypes.IDefaultChildren>`

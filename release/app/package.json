@@ -1,8 +1,8 @@
 {
-  "name": "react_electron_template",
-  "productName": "react_electron_template",
-  "description": "Example electron template",
-  "version": "0.2.0",
+  "name": "monsters_testing_ground",
+  "productName": "monsters_testing_ground",
+  "description": "Monsters testing ground",
+  "version": "0.0.1",
   "author": "https://github.com/Virus288",
   "license": "Apache-2.0",
   "main": "./dist/main/main.js",

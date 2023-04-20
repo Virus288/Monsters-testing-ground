@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type * as types from '../../../types/messages';
 import type * as enums from '../../../enums';
+import type * as types from '../../../types/messages';
 
 export interface ICommunicatorMessage {
   counter: number;

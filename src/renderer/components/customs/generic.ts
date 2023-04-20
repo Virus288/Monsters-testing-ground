@@ -1,7 +1,7 @@
-import styled, { createGlobalStyle } from 'styled-components';
 import { motion } from 'framer-motion';
-import type * as localTypes from '../../types';
+import styled, { createGlobalStyle } from 'styled-components';
 import * as enums from '../../enums';
+import type * as localTypes from '../../types';
 
 export const GlobalStyle = createGlobalStyle`
   * {

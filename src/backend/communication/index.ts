@@ -1,15 +1,15 @@
 import Electron from 'electron';
 import * as enums from '../../enums';
 import { EResponseCallback } from '../../enums';
+import Log from '../../logger/log';
 import type * as types from '../../types';
 import Handler from './handler';
-import Log from '../../logger/log';
 
 export default class Communication {
   private readonly _handler: Handler;
 
   constructor() {
-    this._handler = new Handler();
+    this._handler = new Handler((message: types.IDataConnection) => this.sendMessage(message));
   }
 
   private _client: Electron.WebContents | null = null;
@@ -82,13 +82,10 @@ export default class Communication {
 
     switch (data.type) {
       case enums.EResponseCallback.Data:
-        this.handler.handleData(data);
+        this.handler.handleData(data as types.IDataMessage);
         break;
       case enums.EResponseCallback.Error:
         this.handler.handleError(data);
-        break;
-      case enums.EResponseCallback.Debug:
-        this.handler.handleDebug(data);
         break;
       case enums.EResponseCallback.Client:
         this.handleClient(e);

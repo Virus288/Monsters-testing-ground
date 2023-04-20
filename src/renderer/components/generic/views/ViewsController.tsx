@@ -1,16 +1,16 @@
+import { AnimatePresence } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import type { DefaultTheme } from 'styled-components';
-import { AnimatePresence } from 'framer-motion';
+import { EResponseCallback, EUpdateChannels } from '../../../../enums';
 import type * as enums from '../../../enums';
+import * as hooks from '../../../redux';
 import { useMainDispatch, useMainSelector } from '../../../redux/hooks';
-import Components from '../../index';
 import Router from '../../../Router';
 import { App as MainApp } from '../../customs';
-import Notifications from '../../notifications/views/Component';
-import * as hooks from '../../../redux';
-import { EResponseCallback, EUpdateChannels } from '../../../../enums';
-import Loading from './Loading';
 import { logIn } from '../../home/controller';
+import Components from '../../index';
+import Notifications from '../../notifications/views/Component';
+import Loading from './Loading';
 
 const StaticHandlers: React.FC<{
   setTheme: React.Dispatch<React.SetStateAction<DefaultTheme>>;
@@ -67,7 +67,6 @@ const ViewsController: React.FC<{
     <Loading finished={finished} />
   ) : (
     <>
-      <Components.Communicator />
       <Notifications />
       <MainApp id="app">
         <StaticHandlers setTheme={setTheme} settings={settings} setSettings={setSettings} />

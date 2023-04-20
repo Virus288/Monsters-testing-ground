@@ -1,7 +1,7 @@
-import type { MainDispatch } from '../../store/types';
-import * as hooks from '../../redux';
 import { EResponseCallback, EUpdateChannels } from '../../../enums';
 import { ENotificationType } from '../../enums';
+import * as hooks from '../../redux';
+import type { MainDispatch } from '../../store/types';
 
 export const sendUpdate = (dispatch: MainDispatch, available: boolean): void => {
   if (!available) {

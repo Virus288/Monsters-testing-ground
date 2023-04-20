@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import styled from 'styled-components';
 import type * as types from '../../../types';
 import { NavButton } from '../../generic/themed';
 

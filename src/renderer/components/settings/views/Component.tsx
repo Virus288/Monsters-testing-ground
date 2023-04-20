@@ -1,11 +1,11 @@
+import { AnimatePresence } from 'framer-motion';
 import React, { useState } from 'react';
 import type { DefaultTheme } from 'styled-components';
 import { useTheme } from 'styled-components';
-import { AnimatePresence } from 'framer-motion';
 import * as animation from '../../../animation';
-import { Body, Section } from '../themed';
 import * as enums from '../../../enums';
 import { ContainerBody, ExitButton, OverlayContainer, PanelHeader } from '../../customs';
+import { Body, Section } from '../themed';
 import * as renders from './Renderer';
 
 const SettingsPanel: React.FC<{

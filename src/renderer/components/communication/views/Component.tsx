@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import * as hooks from '../../../redux';
-import Controller from '../../../communication';
-import { useMainDispatch, useMainSelector } from '../../../redux/hooks';
 import { EResponseCallback } from '../../../../enums';
+import Controller from '../../../communication';
+import * as hooks from '../../../redux';
+import { useMainDispatch, useMainSelector } from '../../../redux/hooks';
 
 const Communicator: React.FC = () => {
   const dispatch = useMainDispatch();

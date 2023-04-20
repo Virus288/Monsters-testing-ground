@@ -1,6 +1,6 @@
-import type { MainDispatch } from '../store/types';
 import * as enums from '../../enums';
 import type * as types from '../../types';
+import type { MainDispatch } from '../store/types';
 import Handler from './handler';
 
 export default class Communication {
