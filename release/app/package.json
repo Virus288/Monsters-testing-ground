@@ -1,0 +1,18 @@
+{
+  "name": "react_electron_template",
+  "productName": "react_electron_template",
+  "description": "Example electron template",
+  "version": "0.2.0",
+  "author": "https://github.com/Virus288",
+  "license": "Apache-2.0",
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
+  }
+}

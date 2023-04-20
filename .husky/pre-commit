@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running lint-staged"
+npx lint-staged
+echo "Running tsc"
+node ./node_modules/.bin/tsc --skipLibCheck
+echo "Did you test it ? "
