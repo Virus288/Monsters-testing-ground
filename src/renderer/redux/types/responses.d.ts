@@ -6,7 +6,7 @@ export interface IResponsesBody {
   target: EResponse;
   payload: {
     subTarget: EResponseSubTarget;
-    data: IFullError | string;
+    data: IFullError | unknown;
   };
 }
 

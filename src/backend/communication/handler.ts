@@ -2,6 +2,7 @@ import * as enums from '../../enums';
 import { EGenericChannel, EResponse, EResponseCallback, EResponseSubTarget } from '../../enums';
 import Log from '../../logger/log';
 import type * as types from '../../types';
+import State from '../state';
 import Controller from './controller';
 
 export default class Handler {
@@ -72,7 +73,8 @@ export default class Handler {
     this.controller
       .login(JSON.stringify(data))
       .then((tokens) => {
-        Log.warn('Tokens', `Got user tokens: ${JSON.stringify(tokens)}`);
+        const { accessToken, refreshToken } = tokens;
+        State.store.add({ target: data.login, access: accessToken, refresh: refreshToken });
 
         return this.send({
           type: EResponseCallback.Data,
@@ -80,7 +82,7 @@ export default class Handler {
             target: EResponse.Login,
             payload: {
               subTarget: EResponseSubTarget.Response,
-              data: null,
+              data: { target: data.login, access: accessToken, refresh: refreshToken },
             },
           },
           target: EGenericChannel.Response,

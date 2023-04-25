@@ -8,7 +8,7 @@ const getCache = (): string => {
   const name = process.env.APP_NAME ?? process.env.npm_package_name;
 
   if (!path) throw new Error('Platform unknown. Cannot find cache folder');
-  path += `/${cache}/${name ?? 'undefined'}`;
+  path += `/${cache}/monsters/${name ?? 'undefined'}`;
   return path;
 };
 

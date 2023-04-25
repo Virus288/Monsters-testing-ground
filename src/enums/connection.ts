@@ -1,6 +1,6 @@
 export enum EConnectionChannels {
   Connection = 'connection',
-  Update = 'update',
+  Main = 'main',
 }
 
 export enum EResponseCallback {

@@ -1,8 +1,4 @@
-# Sample template made to shorten work on electron apps.
-
-## This template is using this as base https://github.com/electron-react-boilerplate/electron-react-boilerplate
-
-## This project is collection of few react elements inside electron base, which can be used to fasten your work.
+# Monsters testing utility created with electron.
 
 ## 1. How to start
 
@@ -79,4 +75,4 @@ npm run build:target / yarn build:target
 
 #### When updater finds new update, it tries to fetch release-notes for it. You can find release-notes structure in 'example.release-notes.json' files. By default, ui will only render first target it can find
 
-#### In assets folder, you can find config file. This config file contains different update url, that is used fetch release-notes
+#### In assets folder, you can find config file.

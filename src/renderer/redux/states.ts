@@ -7,3 +7,4 @@ export const communicatorState = (state: RootMainState): types.ICommunicatorStat
 export const updateState = (state: RootMainState): types.IUpdateState => state.update;
 export const appState = (state: RootMainState): types.IAppState => state.app;
 export const responsesState = (state: RootMainState): types.IResponsesState => state.responses;
+export const tokensState = (state: RootMainState): types.ITokensState => state.tokens;

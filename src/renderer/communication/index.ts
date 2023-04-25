@@ -35,7 +35,7 @@ export default class Communication {
   }
 
   sendUpdateMessage(message: types.IDataConnection): void {
-    this.handler.sendMessage(JSON.stringify(message), enums.EConnectionChannels.Update);
+    this.handler.sendMessage(JSON.stringify(message), enums.EConnectionChannels.Main);
   }
 
   private handleMessage(data: types.IDataConnection): void {
@@ -47,7 +47,11 @@ export default class Communication {
       case enums.EResponseCallback.Data:
         return this.handler.handleData(data.target, data.payload);
       default:
-        return this.handler.sendLog(enums.ELogTypes.Error, 'Front Communicator', `Incorrect data type: ${data.target}`);
+        return this.handler.sendLog(
+          enums.ELogTypes.Error,
+          'Front Communicator',
+          `Incorrect data type: ${data.target as string}`,
+        );
     }
   }
 

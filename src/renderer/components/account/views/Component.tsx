@@ -3,6 +3,7 @@ import { EResponse, EResponseSubTarget } from '../../../../enums';
 import * as animation from '../../../animation';
 import * as hooks from '../../../redux';
 import { useMainDispatch, useMainSelector } from '../../../redux/hooks';
+import type { IUserTokens } from '../../../types';
 import { handleResponseError, handleResponseSuccess } from '../../../utils';
 import { Container, ContainerBody, Error, Success } from '../../customs';
 import { Section } from '../../settings/themed';
@@ -14,6 +15,9 @@ const Account: React.FC = () => {
   const [err, setErr] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [type, setType] = useState<EResponse.Login | EResponse.Register>(EResponse.Login);
+  const tokens = useMainSelector(hooks.tokensState).tokens.map((e) => {
+    return e.target;
+  });
 
   useEffect(() => {
     const response = data.find((e) => {
@@ -25,6 +29,7 @@ const Account: React.FC = () => {
           handleResponseError(response, dispatch, setErr, type);
           break;
         case EResponseSubTarget.Response:
+          dispatch(hooks.addToken(response.payload.data as IUserTokens[]));
           handleResponseSuccess(type === EResponse.Login ? 'Logged in' : 'Created account', dispatch, setSuccess, type);
           break;
         default:
@@ -46,9 +51,9 @@ const Account: React.FC = () => {
 
         <Section>
           {type === EResponse.Login ? (
-            <Login setErr={setErr} setSuccess={setSuccess} setType={setType} />
+            <Login setErr={setErr} setSuccess={setSuccess} setType={setType} users={tokens} />
           ) : (
-            <Register setSuccess={setSuccess} setErr={setErr} setType={setType} />
+            <Register setSuccess={setSuccess} setErr={setErr} setType={setType} users={tokens} />
           )}
         </Section>
       </ContainerBody>

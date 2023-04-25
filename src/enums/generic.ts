@@ -4,4 +4,5 @@ export enum EGenericChannel {
   Register = 'register',
   Login = 'login',
   Response = 'response',
+  Tokens = 'tokens',
 }

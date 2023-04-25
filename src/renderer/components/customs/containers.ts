@@ -60,6 +60,8 @@ export const Inline = styled(motion.span)<localTypes.IDefaultChildren>`
   align-items: center;
   flex-wrap: nowrap;
   width: fit-content;
+  overflow-y: hidden;
+  overflow-x: hidden;
 
   * {
     margin: 5px;

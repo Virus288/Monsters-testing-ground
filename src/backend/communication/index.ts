@@ -1,6 +1,6 @@
 import Electron from 'electron';
 import * as enums from '../../enums';
-import { EResponseCallback } from '../../enums';
+import { EResponseCallback, EConnectionChannels } from '../../enums';
 import Log from '../../logger/log';
 import type * as types from '../../types';
 import Handler from './handler';
@@ -70,7 +70,7 @@ export default class Communication {
    * Send message to frontend
    */
   sendMessage(message: types.IDataConnection): void {
-    this.handleSendMessage(JSON.stringify(message));
+    this.handleSendMessage(JSON.stringify(message), EConnectionChannels.Connection);
   }
 
   /**
@@ -114,12 +114,12 @@ export default class Communication {
   /**
    * Send message to frontend
    */
-  private handleSendMessage(message: string): void {
+  private handleSendMessage(message: string, type: enums.EConnectionChannels): void {
     if (!this._client) {
       this.messagesQueue.push(message);
       this.handleQueue();
     } else {
-      this._client.send(enums.EConnectionChannels.Connection, message);
+      this._client.send(type, message);
     }
   }
 

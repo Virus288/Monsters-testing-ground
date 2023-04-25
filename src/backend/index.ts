@@ -1,8 +1,8 @@
 import Log from '../logger/log';
 import State from './state';
 
-class App {
-  constructor() {
+export default class App {
+  initApp(): void {
     this.startApp();
   }
 
@@ -10,7 +10,9 @@ class App {
     try {
       State.communicator.listen();
 
-      return Log.success('Backend', 'Backend up and running');
+      Log.success('Backend', 'Backend up and running');
+
+      return this.initModules();
     } catch (err) {
       Log.error('Backend', "Couldn't start backend");
       Log.error('Backend', err);
@@ -18,10 +20,11 @@ class App {
     }
   }
 
+  private initModules(): void {
+    State.store.init();
+  }
+
   private close(): void {
-    State.communicator?.close();
     State.communicator?.close();
   }
 }
-
-export default new App();

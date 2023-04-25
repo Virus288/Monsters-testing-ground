@@ -1,5 +1,8 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
+import { app, BrowserWindow, ipcMain, shell } from "electron";
+import fetch from "electron-fetch";
+import { autoUpdater } from "electron-updater";
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -8,19 +11,16 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path from 'path';
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import fetch from 'electron-fetch';
-import '../backend';
-import MenuBuilder from './menu';
-import { resolveHtmlPath } from './util';
-import Log from '../logger/log';
-import * as enums from '../enums';
-import { EResponseCallback } from '../enums';
-import * as types from '../types';
-import { IDataConnection } from '../types';
-import { getConfig } from '../backend/utils';
+import path from "path";
+import App from "../backend";
+import { getConfig } from "../backend/utils";
+import * as enums from "../enums";
+import { EResponseCallback } from "../enums";
+import Log from "../logger/log";
+import * as types from "../types";
+import { IDataConnection } from "../types";
+import MenuBuilder from "./menu";
+import { resolveHtmlPath } from "./util";
 
 class AppUpdater {
   private _listener: Electron.IpcMain | undefined = undefined;
@@ -33,15 +33,21 @@ class AppUpdater {
     this._listener = value;
   }
 
+  /**
+   * Listen for messages
+   */
   listen(): void {
-    this.listener?.removeListener(enums.EConnectionChannels.Update, (e, data: string) =>
+    this.listener?.removeListener(enums.EConnectionChannels.Main, (e, data: string) =>
       this.handleMessage(e.sender, data),
     );
-    this.listener = ipcMain.on(enums.EConnectionChannels.Update, (e, data: string) => {
+    this.listener = ipcMain.on(enums.EConnectionChannels.Main, (e, data: string) => {
       this.handleMessage(e.sender, data);
     });
   }
 
+  /**
+   * Check for new update
+   */
   check(client: Electron.WebContents): void {
     autoUpdater.autoDownload = false;
     autoUpdater.autoRunAppAfterInstall = true;
@@ -73,6 +79,9 @@ class AppUpdater {
     });
   }
 
+  /**
+   * Download update
+   */
   update(client: Electron.WebContents): void {
     autoUpdater.downloadUpdate();
 
@@ -98,10 +107,16 @@ class AppUpdater {
     });
   }
 
+  /**
+   * Install update
+   */
   install(): void {
     autoUpdater.quitAndInstall();
   }
 
+  /**
+   * Handle messages from backend and frontend
+   */
   private handleMessage(sender: Electron.WebContents, data: string): void {
     const message = JSON.parse(data) as types.IDataConnection;
     switch (message.target) {
@@ -128,6 +143,9 @@ class AppUpdater {
     }
   }
 }
+
+const backend = new App();
+backend.initApp();
 
 let mainWindow: BrowserWindow | null = null;
 

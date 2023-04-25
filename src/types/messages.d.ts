@@ -1,6 +1,11 @@
 import type * as enums from '../enums';
 
-export type IMessageTargets = enums.EErrors | enums.EConnectionChannels | enums.EUpdateChannels | enums.EGenericChannel;
+export type IMessageTargets =
+  | enums.EErrors
+  | enums.EConnectionChannels
+  | enums.EUpdateChannels
+  | enums.EGenericChannel
+  | enums.ESecuredChannels;
 
 export interface IDataConnection {
   type: enums.EResponseCallback;
@@ -17,5 +22,5 @@ export interface ILogMessage {
 export interface IDataMessage {
   type: enums.EResponseCallback;
   payload: unknown;
-  target: enums.EGenericChannel;
+  target: enums.EGenericChannel | enums.ESecuredChannels;
 }

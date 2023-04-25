@@ -55,9 +55,16 @@ export default class Handler {
       case enums.EGenericChannel.Response:
         this.handleResponse(data as IResponsesBody);
         break;
+      case enums.EGenericChannel.Tokens:
+        this.handleTokens(data as types.ISafeStorageKeys);
+        break;
       default:
         break;
     }
+  }
+
+  private handleTokens(data: types.ISafeStorageKeys): void {
+    this.dispatch(hooks.addToken(data.keys));
   }
 
   private handleResponse(data: IResponsesBody): void {
