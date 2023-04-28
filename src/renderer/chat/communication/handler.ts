@@ -1,5 +1,4 @@
 import * as enums from '../../../enums';
-import Log from '../../../logger/log';
 import type * as types from '../../../types';
 import * as hooks from '../redux';
 import type { ISocketActionBody } from '../redux/types';
@@ -18,7 +17,7 @@ export default class Handler {
 
   sendMessage(message: string, type: enums.EConnectionChannels): void {
     if (!window.electron?.ipcRenderer) {
-      return Log.error('Socket', 'Electron does not exist. Will not contact backend');
+      console.info('Electron does not exist. Will not contact backend');
     }
     return window.electron.ipcRenderer.send(type, message);
   }

@@ -10,3 +10,11 @@ export enum ESocketTarget {
   Logs = 'logs',
   Messages = 'messages',
 }
+
+export enum EMessageTypes {
+  Send = 'send',
+  Get = 'get',
+  GetWithDetails = 'getWithDetails',
+  GetUnread = 'getUnread',
+  Read = 'read',
+}

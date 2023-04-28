@@ -1,5 +1,4 @@
 import * as enums from '../../../enums';
-import Log from '../../../logger/log';
 import type * as types from '../../../types';
 import type { MainDispatch } from '../store/types';
 import Handler from './handler';
@@ -23,7 +22,7 @@ export default class Communication {
 
   listen(): void {
     if (!window.electron?.ipcRenderer) {
-      Log.error('Communicator', 'Electron does not exist. Will not contact backend');
+      console.info('Electron does not exist. Will not contact backend');
     } else {
       window.electron.ipcRenderer.on(enums.EConnectionChannels.Connection, (data) => {
         this.handleMessage(JSON.parse(data) as types.IDataConnection);

@@ -4,7 +4,7 @@ import { NavContainer, NavIcons, NavButton, NavBody, NavSwitch } from '../../../
 import type * as enums from '../../../../main/enums';
 import { EActiveAppStates } from '../../../../main/enums';
 import * as animation from '../../../../shared/animation';
-import { connect, disconnect } from '../../../contorllers';
+import { connect, disconnect } from '../../../controllers';
 import * as hooks from '../../../redux';
 import { useMainSelector, useMainDispatch } from '../../../redux/hooks';
 import toggleNav from '../utils';

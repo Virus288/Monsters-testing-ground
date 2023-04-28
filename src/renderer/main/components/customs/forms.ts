@@ -46,8 +46,9 @@ export const Label = styled(motion.h2)<localTypes.IDefaultChildren>`
 export const TextArea = styled('textarea')`
   border: none;
   outline: none;
-  width: 90%;
-  max-width: 300px;
+  width: 100%;
+  min-width: 300px;
+  max-width: 400px;
   font-size: 1.1em;
   background: rgba(128, 128, 128, 0.3);
   color: ${(props): string => props.theme.colors.default};

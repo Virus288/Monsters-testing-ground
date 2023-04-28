@@ -37,6 +37,7 @@ export default class Socket {
   }
 
   sendMessage({ user, message }: { user: string; message: string }): void {
+    Log.log('Info', `User ${user} sending websocket connection`, JSON.stringify(message));
     this._connections[user].send(JSON.stringify(message));
   }
 
@@ -53,6 +54,7 @@ export default class Socket {
   }
 
   private handleMessage(user: string, message: ISocketOutMessage): void {
+    Log.log('Info', `User ${user} received websocket message`, JSON.stringify(message));
     State.communicator.sendChatMessage(
       {
         type: EResponseCallback.Data,
@@ -68,6 +70,7 @@ export default class Socket {
   }
 
   private handleLogs(user: string, logs: ISocketOutMessage): void {
+    Log.log('Info', `User ${user} had his websocket connections closed`, JSON.stringify(logs));
     State.communicator.sendChatMessage(
       {
         type: EResponseCallback.Data,
@@ -83,6 +86,8 @@ export default class Socket {
   }
 
   private handleStatus(user: string, status: boolean): void {
+    Log.log('Info', `User ${user} websocket's connection change status to ${status ? 'connected' : 'disconnected'}`);
+
     State.communicator.sendChatMessage(
       {
         type: EResponseCallback.Data,
