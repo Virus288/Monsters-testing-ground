@@ -29,7 +29,7 @@ export default class App {
   }
 
   private initModules(): void {
-    State.store.init();
+    State.store.emit();
   }
 
   private close(): void {

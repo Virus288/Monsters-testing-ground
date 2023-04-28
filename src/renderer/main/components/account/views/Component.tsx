@@ -3,7 +3,6 @@ import { EResponseSubTarget, EResponse } from '../../../../../enums';
 import * as animation from '../../../../shared/animation';
 import * as hooks from '../../../redux';
 import { useMainDispatch, useMainSelector } from '../../../redux/hooks';
-import type { IUserTokens } from '../../../types';
 import { handleResponseError, handleResponseSuccess } from '../../../utils';
 import { Container, ContainerBody, Error, Success } from '../../customs';
 import { Section } from '../../settings/themed';
@@ -29,7 +28,6 @@ const Account: React.FC = () => {
           handleResponseError(response, dispatch, setErr, type);
           break;
         case EResponseSubTarget.Response:
-          dispatch(hooks.addToken(response.payload.data as IUserTokens[]));
           handleResponseSuccess(type === EResponse.Login ? 'Logged in' : 'Created account', dispatch, setSuccess, type);
           break;
         default:

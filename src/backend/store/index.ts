@@ -14,8 +14,13 @@ export default class Store {
     return this._store;
   }
 
-  init(): void {
+  emit(): void {
     State.communicator.sendMessage({
+      type: EResponseCallback.Data,
+      payload: this.get(),
+      target: EGenericChannel.Tokens,
+    });
+    State.communicator.sendChatMessage({
       type: EResponseCallback.Data,
       payload: this.get(),
       target: EGenericChannel.Tokens,
@@ -29,6 +34,7 @@ export default class Store {
       return e.target !== data.target;
     });
     tokens.keys.push(data);
+
     this.store.set('tokens', tokens);
   }
 

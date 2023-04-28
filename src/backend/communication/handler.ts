@@ -93,6 +93,7 @@ export default class Handler {
       .then((tokens) => {
         const { accessToken, refreshToken } = tokens;
         State.store.add({ target: data.login, access: accessToken, refresh: refreshToken });
+        State.store.emit();
 
         return this.send({
           type: EResponseCallback.Data,

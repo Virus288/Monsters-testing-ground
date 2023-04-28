@@ -89,8 +89,14 @@ export default class Communication {
   /**
    * Send message to selected chat user
    */
-  sendChatMessage(message: types.IDataConnection, user: string): void {
-    this.handleSendChatMessage(JSON.stringify(message), EConnectionChannels.Connection, user);
+  sendChatMessage(message: types.IDataConnection, user?: string): void {
+    if (user) {
+      return this.handleSendChatMessage(JSON.stringify(message), EConnectionChannels.Connection, user);
+    }
+
+    return Object.keys(this.chats).forEach((u) => {
+      this.handleSendChatMessage(JSON.stringify(message), EConnectionChannels.Connection, u);
+    });
   }
 
   fullFillDeadClient(id: number): void {
@@ -202,21 +208,6 @@ export default class Communication {
       this.chats[user] = { id: null, connection: null };
     }
   }
-
-  // /**
-  //  * Prepare new client for chat window
-  //  */
-  // private handleInitClient({ id }: { id: number }): void {
-  //   const emptyTarget = Object.entries(this.chats).find((e) => {
-  //     return e[1]?.connection === null;
-  //   });
-  //
-  //   if (!emptyTarget) {
-  //     Log.error('Sockets', 'Requested to add new window id but no windows exist.');
-  //   } else {
-  //     this.chats[emptyTarget[0]] = { id, connection: null };
-  //   }
-  // }
 
   /**
    * Send message to frontend

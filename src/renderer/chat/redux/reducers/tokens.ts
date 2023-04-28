@@ -6,7 +6,14 @@ const tokens = createSlice({
   initialState: { tokens: [] } as types.ITokensState,
   reducers: {
     addToken(state, action: types.ITokenAction) {
-      state.tokens = state.tokens.concat(action.payload);
+      const names = action.payload.map((e) => {
+        return e.target;
+      });
+      const prepared = state.tokens.filter((e) => {
+        return !names.includes(e.target);
+      });
+
+      state.tokens = prepared.concat(action.payload);
       return state;
     },
   },

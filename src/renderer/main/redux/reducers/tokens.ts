@@ -6,7 +6,7 @@ const tokens = createSlice({
   initialState: { tokens: [] } as types.ITokensState,
   reducers: {
     addToken(state, action: types.ITokenAction) {
-      state.tokens = state.tokens.concat(action.payload);
+      state.tokens = action.payload;
       return state;
     },
   },

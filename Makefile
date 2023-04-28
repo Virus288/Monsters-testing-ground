@@ -3,11 +3,11 @@ buildDebug:
 	&& yarn build:debug \
 	&& yarn build:linux \
 	&& yarn build:windows \
-	&& notify-send 'Gameinn_3: Build created'
+	&& notify-send 'Monsters testing ground: Build created'
 
 build:
 	clear \
 	&& yarn build \
 	&& yarn build:linux \
 	&& yarn build:windows \
-	&& notify-send 'Gameinn_3: Build created'
+	&& notify-send 'Monsters testing ground: Build created'
