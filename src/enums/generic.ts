@@ -5,4 +5,5 @@ export enum EGenericChannel {
   Login = 'login',
   Response = 'response',
   Tokens = 'tokens',
+  ChatMessage = 'chatMessage',
 }

@@ -5,7 +5,8 @@ export type IMessageTargets =
   | enums.EConnectionChannels
   | enums.EUpdateChannels
   | enums.EGenericChannel
-  | enums.ESecuredChannels;
+  | enums.EWindowChannels
+  | enums.ESocketChannels;
 
 export interface IDataConnection {
   type: enums.EResponseCallback;

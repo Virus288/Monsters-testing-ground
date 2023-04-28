@@ -29,6 +29,12 @@ export default class Handler {
         return this.handleRegister(data.payload as types.IRegisterReq);
       case enums.EGenericChannel.Login:
         return this.handleLogin(data.payload as types.ILoginReq);
+      case enums.ESocketChannels.Connect:
+        return this.handleSocketConnect(data.payload as { user: string });
+      case enums.ESocketChannels.Disconnect:
+        return this.handleSocketDisconnect(data.payload as { user: string });
+      case enums.ESocketChannels.SendMessage:
+        return this.handleSendMessage(data.payload as { user: string; message: string });
       default:
         return Log.log('Handle data', 'Wrong target');
     }
@@ -36,6 +42,18 @@ export default class Handler {
 
   handleError(data: types.IDataConnection): void {
     Log.error('Error handler', JSON.stringify(data));
+  }
+
+  private handleSendMessage(data: { user: string; message: string }): void {
+    State.socket.sendMessage(data);
+  }
+
+  private handleSocketConnect(data: { user: string }): void {
+    State.socket.connectUser(data.user);
+  }
+
+  private handleSocketDisconnect(data: { user: string }): void {
+    State.socket.killConnection(data.user);
   }
 
   private handleRegister(data: types.IRegisterReq): void {

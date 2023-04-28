@@ -1,8 +1,9 @@
 import Electron from 'electron';
 import * as enums from '../../enums';
-import { EResponseCallback, EConnectionChannels } from '../../enums';
+import { EConnectionType, EResponseCallback, EConnectionChannels } from '../../enums';
 import Log from '../../logger/log';
 import type * as types from '../../types';
+import State from '../state';
 import Handler from './handler';
 
 export default class Communication {
@@ -18,10 +19,22 @@ export default class Communication {
     return this._client;
   }
 
+  private _chats: Record<string, { id: number | null; connection: Electron.WebContents | null }> = {};
+
+  private get chats(): Record<string, { id: number | null; connection: Electron.WebContents | null }> {
+    return this._chats;
+  }
+
   private _messagesQueue: string[] = [];
 
   private get messagesQueue(): string[] {
     return this._messagesQueue;
+  }
+
+  private _chatMessagesQueue: { message: string; user: string }[] = [];
+
+  private get chatMessagesQueue(): { message: string; user: string }[] {
+    return this._chatMessagesQueue;
   }
 
   private _timer: NodeJS.Timer | undefined = undefined;
@@ -74,6 +87,39 @@ export default class Communication {
   }
 
   /**
+   * Send message to selected chat user
+   */
+  sendChatMessage(message: types.IDataConnection, user: string): void {
+    this.handleSendChatMessage(JSON.stringify(message), EConnectionChannels.Connection, user);
+  }
+
+  fullFillDeadClient(id: number): void {
+    const target = Object.entries(this.chats).find((e) => {
+      return e[1]!.id === id;
+    });
+    if (!target) return Log.error('Sockets', 'Requested to close window but provided incorrect id');
+
+    delete this.chats[target[0]];
+    return this.sendMessage({
+      target: enums.EGenericChannel.Init,
+      type: enums.EResponseCallback.RemoveClient,
+      payload: { user: target[0] },
+    });
+  }
+
+  startNewWindow(id: number): void {
+    const target = Object.entries(this.chats).find((e) => {
+      return e[1].id === null;
+    });
+
+    if (target?.length !== 2) {
+      Log.error('Sockets', 'Requested to initialize new window but no window is available');
+    } else {
+      this.chats[target[0]] = { ...this.chats[target[0]], id };
+    }
+  }
+
+  /**
    * Handle new message from frontend
    */
   private handleMessage(e: Electron.WebContents, data: types.IDataConnection): void {
@@ -88,7 +134,10 @@ export default class Communication {
         this.handler.handleError(data);
         break;
       case enums.EResponseCallback.Client:
-        this.handleClient(e);
+        this.handleClient(e, data.payload as { type: EConnectionType });
+        break;
+      case enums.EResponseCallback.CreateClient:
+        this.handleCreateClient(data.payload as { user: string });
         break;
       case enums.EResponseCallback.Log:
         this.handleLog(data);
@@ -102,24 +151,94 @@ export default class Communication {
   /**
    * Add frontend client
    */
-  private handleClient(client: Electron.WebContents): void {
-    this._client = client;
+  private handleClient(client: Electron.WebContents, data: { type: EConnectionType }): void {
+    if (data.type === EConnectionType.Main) {
+      this._client = client;
+      return this.sendMessage({
+        target: enums.EGenericChannel.Init,
+        type: EResponseCallback.Data,
+        payload: undefined,
+      });
+    }
+
+    const emptyTarget = Object.entries(this.chats).find((e) => {
+      return e[1]?.connection === null && e[1]?.id !== null;
+    });
+    if (!emptyTarget) return Log.error('Sockets', 'Requested new chat window but no targets were provided');
+    this.chats[emptyTarget[0]] = { ...this.chats[emptyTarget[0]], connection: client };
+
     this.sendMessage({
       target: enums.EGenericChannel.Init,
-      type: EResponseCallback.Data,
-      payload: undefined,
+      type: enums.EResponseCallback.CreateClient,
+      payload: { user: emptyTarget[0] },
     });
+
+    this.sendChatMessage(
+      {
+        target: enums.EGenericChannel.Tokens,
+        type: EResponseCallback.Data,
+        payload: State.store.get(),
+      },
+      emptyTarget[0],
+    );
+
+    return this.sendChatMessage(
+      {
+        target: enums.EGenericChannel.Init,
+        type: EResponseCallback.Data,
+        payload: { user: emptyTarget[0] },
+      },
+      emptyTarget[0],
+    );
   }
+
+  /**
+   * Prepare new client for chat window
+   */
+  private handleCreateClient({ user }: { user: string }): void {
+    if (Object.keys(this.chats).includes(user)) {
+      Log.error('Sockets', 'Requested new window for user that already has a window.');
+    } else {
+      this.chats[user] = { id: null, connection: null };
+    }
+  }
+
+  // /**
+  //  * Prepare new client for chat window
+  //  */
+  // private handleInitClient({ id }: { id: number }): void {
+  //   const emptyTarget = Object.entries(this.chats).find((e) => {
+  //     return e[1]?.connection === null;
+  //   });
+  //
+  //   if (!emptyTarget) {
+  //     Log.error('Sockets', 'Requested to add new window id but no windows exist.');
+  //   } else {
+  //     this.chats[emptyTarget[0]] = { id, connection: null };
+  //   }
+  // }
 
   /**
    * Send message to frontend
    */
   private handleSendMessage(message: string, type: enums.EConnectionChannels): void {
-    if (!this._client) {
+    if (!this.client) {
       this.messagesQueue.push(message);
       this.handleQueue();
     } else {
-      this._client.send(type, message);
+      this.client.send(type, message);
+    }
+  }
+
+  /**
+   * Send message to frontend
+   */
+  private handleSendChatMessage(message: string, type: enums.EConnectionChannels, user: string): void {
+    if (this.chats[user] === null) {
+      this.chatMessagesQueue.push({ message, user });
+      this.handleChatQueue(user);
+    } else {
+      this.chats[user].connection!.send(type, message);
     }
   }
 
@@ -132,6 +251,27 @@ export default class Communication {
         if (this.client) {
           this.messagesQueue.forEach((m) => {
             this.client?.send(enums.EConnectionChannels.Connection, m);
+          });
+          clearInterval(this.timer);
+        }
+      }, 1000);
+    }
+  }
+
+  /**
+   * Handle messages queue in case that frontend does not exist
+   */
+  private handleChatQueue(user: string): void {
+    if (this.chatMessagesQueue.length === 0) {
+      clearInterval(this.timer);
+    } else if (!this.timer) {
+      this._timer = setInterval(() => {
+        if (this.chats[user]) {
+          const messages = this.chatMessagesQueue.filter((m) => {
+            return m.user === user;
+          });
+          messages.forEach((m) => {
+            this.chats[user].connection!.send(enums.EConnectionChannels.Connection, m.message);
           });
           clearInterval(this.timer);
         }

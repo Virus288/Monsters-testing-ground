@@ -6,6 +6,14 @@ export default class App {
     this.startApp();
   }
 
+  fullFillDeadWindow(id: number): void {
+    State.communicator.fullFillDeadClient(id);
+  }
+
+  startNewWindow(id: number): void {
+    State.communicator.startNewWindow(id);
+  }
+
   private startApp(): void {
     try {
       State.communicator.listen();
