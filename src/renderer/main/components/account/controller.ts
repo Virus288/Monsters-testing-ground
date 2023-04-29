@@ -1,5 +1,4 @@
 import type { FormEvent } from 'react';
-import type React from 'react';
 import { EGenericChannel, EResponseCallback } from '../../../../enums';
 import * as hooks from '../../redux';
 import type { ICommunicatorBody } from '../../redux/types';
@@ -49,6 +48,18 @@ export const register = (
       email: email.value,
       login: login.value,
       password: password.value,
+    },
+  };
+
+  dispatch(hooks.sendMessage(message));
+};
+
+export const removeUser = (user: string, dispatch: MainDispatch): void => {
+  const message: ICommunicatorBody = {
+    target: EGenericChannel.RemoveUser,
+    type: EResponseCallback.Data,
+    message: {
+      user,
     },
   };
 

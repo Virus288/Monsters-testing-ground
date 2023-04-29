@@ -34,7 +34,7 @@ export const lightTheme: DefaultTheme = {
   },
   background: {
     default: '#ffffff',
-    semiTransparent: 'rgba(255,255,255, 0.99)',
+    semiTransparent: 'rgba(255,255,255, 0.9)',
     opposite: 'rgba(95, 95, 95, 0.99)',
   },
   themeState: enums.EThemes.Light,

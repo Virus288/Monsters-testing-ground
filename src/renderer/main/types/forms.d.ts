@@ -17,3 +17,16 @@ export interface ISendSocketManualMessage extends HTMLFormElement {
   message: HTMLInputElement;
   target: HTMLInputElement;
 }
+
+export interface ISocketGetMessage extends HTMLFormElement {
+  page: HTMLInputElement;
+}
+
+export interface ISocketGetWithDetails extends ISocketGetMessage {
+  target: HTMLInputElement;
+}
+
+export interface ISocketReadMessage extends HTMLFormElement {
+  id: HTMLInputElement;
+  user: HTMLInputElement;
+}

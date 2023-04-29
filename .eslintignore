@@ -33,4 +33,3 @@ cypress
 #TODO Temporary ignored
 src/main
 .erb/**/*
-.erb/*

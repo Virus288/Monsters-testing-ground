@@ -6,4 +6,5 @@ export enum EGenericChannel {
   Response = 'response',
   Tokens = 'tokens',
   ChatMessage = 'chatMessage',
+  RemoveUser = 'removeUser',
 }

@@ -24,7 +24,7 @@ const Socket: React.FC = () => {
 
   return (
     <Container variants={animation.slideRight} initial="init" animate="visible" exit="exit">
-      <ContainerBody $justify="flex-start">
+      <ContainerBody $justify="flex-start" $direction="row">
         {availableUsers.length > 0 ? generateAvailableUsers(availableUsers, dispatch) : <h2>No available users</h2>}
       </ContainerBody>
     </Container>

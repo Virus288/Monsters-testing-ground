@@ -1,9 +1,10 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
 import * as enums from '../enums';
 import * as types from '../types';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import Log from '../logger/log';
 
 export default class Windows {
   private mainWindow: BrowserWindow | null = null;
@@ -67,7 +68,7 @@ export default class Windows {
 
     this.mainWindow.loadURL(resolveHtmlPath('main'));
 
-    this.mainWindow.on('ready-to-show', () => {
+    this.mainWindow.webContents.on('did-finish-load', () => {
       if (!this.mainWindow) {
         throw new Error('"mainWindow" is not defined');
       }
@@ -121,11 +122,12 @@ export default class Windows {
 
     const childId = child.id;
 
-    child.on('ready-to-show', () => {
+    child.webContents.on('did-finish-load', () => {
       if (!child) {
         throw new Error('"child" is not defined');
       }
 
+      Log.warn('Dupa', 'Chat window got created. Sending message to backend with request to get new window');
       this.handleNewWindow(childId);
 
       if (process.env.START_MINIMIZED) {

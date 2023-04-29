@@ -1,7 +1,7 @@
 /* eslint import/prefer-default-export: off */
-import path from "path";
-import * as process from "process";
-import { URL } from "url";
+import path from 'path';
+import * as process from 'process';
+import {URL} from 'url';
 
 export function resolveHtmlPath(htmlFileName: string) {
   if (process.env.NODE_ENV === 'development') {
@@ -13,9 +13,9 @@ export function resolveHtmlPath(htmlFileName: string) {
 
   switch (htmlFileName) {
     case 'chat':
-      return `file://${path.resolve(__dirname, '../renderer')}/main/index.html`;
+      return `file://${path.resolve(__dirname, '../renderer')}/chat/index.html`;
     case 'main':
     default:
-      return `file://${path.resolve(__dirname, '../renderer')}/chat/index.html`;
+      return `file://${path.resolve(__dirname, '../renderer')}/main/index.html`;
   }
 }

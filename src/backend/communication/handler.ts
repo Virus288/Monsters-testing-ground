@@ -35,6 +35,8 @@ export default class Handler {
         return this.handleSocketDisconnect(data.payload as { user: string });
       case enums.ESocketChannels.SendMessage:
         return this.handleSendMessage(data.payload as { user: string; message: string });
+      case enums.EGenericChannel.RemoveUser:
+        return this.handleRemoveUser(data.payload as { user: string });
       default:
         return Log.log('Handle data', 'Wrong target');
     }
@@ -46,6 +48,11 @@ export default class Handler {
 
   private handleSendMessage(data: { user: string; message: string }): void {
     State.socket.sendMessage(data);
+  }
+
+  private handleRemoveUser({ user }: { user: string }): void {
+    State.store.remove(user);
+    State.store.emit();
   }
 
   private handleSocketConnect(data: { user: string }): void {

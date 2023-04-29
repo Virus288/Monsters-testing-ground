@@ -1,7 +1,12 @@
 import type { FormEvent } from 'react';
 import { ESocketChannels, EResponseCallback } from '../../../../enums';
 import { ENotificationType } from '../../../main/enums';
-import type { ISendSocketManualMessage } from '../../../main/types';
+import type {
+  ISendSocketManualMessage,
+  ISocketGetMessage,
+  ISocketGetWithDetails,
+  ISocketReadMessage,
+} from '../../../main/types';
 import { EMessageTypes } from '../../enums';
 import * as hooks from '../../redux';
 import type { ICommunicatorBody } from '../../redux/types';
@@ -33,6 +38,108 @@ export const sendMessage = (e: FormEvent, user: string, dispatch: MainDispatch):
   dispatch(hooks.sendMessage(body));
 };
 
+export const getMessage = (e: FormEvent, user: string, dispatch: MainDispatch): void => {
+  e.preventDefault();
+  const { page } = e.target as ISocketGetMessage;
+
+  const messageBody = {
+    target: 'chat',
+    subTarget: 'get',
+    payload: {
+      page: parseInt(page.value, 10),
+    },
+  };
+
+  const body: ICommunicatorBody = {
+    target: ESocketChannels.SendMessage,
+    type: EResponseCallback.Data,
+    message: {
+      user,
+      message: messageBody,
+    },
+  };
+
+  dispatch(hooks.addNotification({ message: 'Message sent', type: ENotificationType.Default }));
+  dispatch(hooks.sendMessage(body));
+};
+
+export const getWithDetails = (e: FormEvent, user: string, dispatch: MainDispatch): void => {
+  e.preventDefault();
+  const { page, target } = e.target as ISocketGetWithDetails;
+
+  const messageBody = {
+    target: 'chat',
+    subTarget: 'read',
+    payload: {
+      page: parseInt(page.value, 10),
+      target: target.value,
+    },
+  };
+
+  const body: ICommunicatorBody = {
+    target: ESocketChannels.SendMessage,
+    type: EResponseCallback.Data,
+    message: {
+      user,
+      message: messageBody,
+    },
+  };
+
+  dispatch(hooks.addNotification({ message: 'Message sent', type: ENotificationType.Default }));
+  dispatch(hooks.sendMessage(body));
+};
+
+export const getUnread = (e: FormEvent, user: string, dispatch: MainDispatch): void => {
+  e.preventDefault();
+  const { page } = e.target as ISocketGetMessage;
+
+  const messageBody = {
+    target: 'chat',
+    subTarget: 'getUnread',
+    payload: {
+      page: parseInt(page.value, 10),
+    },
+  };
+
+  const body: ICommunicatorBody = {
+    target: ESocketChannels.SendMessage,
+    type: EResponseCallback.Data,
+    message: {
+      user,
+      message: messageBody,
+    },
+  };
+
+  dispatch(hooks.addNotification({ message: 'Message sent', type: ENotificationType.Default }));
+  dispatch(hooks.sendMessage(body));
+};
+
+export const readMessage = (e: FormEvent, target: string, dispatch: MainDispatch): void => {
+  e.preventDefault();
+  const { id, user } = e.target as ISocketReadMessage;
+
+  const messageBody = {
+    target: 'chat',
+    subTarget: 'read',
+    payload: {
+      id: id.value,
+      user: user.value,
+    },
+  };
+
+  const body: ICommunicatorBody = {
+    target: ESocketChannels.SendMessage,
+    type: EResponseCallback.Data,
+    message: {
+      user: target,
+      message: messageBody,
+    },
+  };
+
+  dispatch(hooks.addNotification({ message: 'Message sent', type: ENotificationType.Default }));
+  dispatch(hooks.sendMessage(body));
+};
+
 export const sendManual = (e: FormEvent, user: string, dispatch: MainDispatch): void => {
   e.preventDefault();
   const { message } = e.target as ISendSocketManualMessage;
@@ -56,12 +163,16 @@ export const updateRawMessage = (
 ): void => {
   const value = e.target.value as EMessageTypes;
 
+  const base = {
+    target: 'chat',
+  };
+
   switch (value) {
     case EMessageTypes.Send:
       setValue(
         JSON.stringify(
           {
-            target: 'chat',
+            ...base,
             subTarget: 'send',
             payload: {
               target: 'userId',
@@ -77,7 +188,7 @@ export const updateRawMessage = (
       setValue(
         JSON.stringify(
           {
-            target: 'chat',
+            ...base,
             subTarget: 'get',
             payload: {
               page: 0,
@@ -92,7 +203,7 @@ export const updateRawMessage = (
       setValue(
         JSON.stringify(
           {
-            target: 'chat',
+            ...base,
             subTarget: 'get',
             payload: {
               page: 0,
@@ -108,7 +219,7 @@ export const updateRawMessage = (
       setValue(
         JSON.stringify(
           {
-            target: 'chat',
+            ...base,
             subTarget: 'getUnread',
             payload: {
               page: 0,
@@ -124,7 +235,7 @@ export const updateRawMessage = (
       setValue(
         JSON.stringify(
           {
-            target: 'chat',
+            ...base,
             subTarget: 'send',
             payload: {
               id: 'conversionsId',
