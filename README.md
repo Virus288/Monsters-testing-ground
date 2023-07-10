@@ -1,3 +1,5 @@
+[Project in is vegetation state. It might or might not receive any more updates, because this project is currectly beeing worked on by 1 person]
+
 # Monsters testing utility created with electron.
 
 ## 1. How to start
